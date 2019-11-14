@@ -1,0 +1,487 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "en-GB",
+    "dataSources": [
+      {
+        "name": "SqlServer LAPTOP-LEJVLN96 student#DW",
+        "connectionString": "Provider=SQLNCLI11;Data Source=LAPTOP-LEJVLN96;Initial Catalog=student#DW;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "City",
+        "columns": [
+          {
+            "name": "CityID",
+            "dataType": "int64",
+            "sourceColumn": "CityID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CityName",
+            "dataType": "string",
+            "sourceColumn": "CityName",
+            "sourceProviderType": "WChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "City",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[City].* FROM [Dimension].[City] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[City].* FROM [Dimension].[City] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "City"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "Customer",
+        "columns": [
+          {
+            "name": "CustomerID",
+            "dataType": "int64",
+            "sourceColumn": "CustomerID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CustomerName",
+            "dataType": "string",
+            "sourceColumn": "CustomerName",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "DeliveryCityID",
+            "dataType": "int64",
+            "sourceColumn": "DeliveryCityID",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Customer",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[Customer].* FROM [Dimension].[Customer] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[Customer].* FROM [Dimension].[Customer] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Customer"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "Order",
+        "columns": [
+          {
+            "name": "OrderID",
+            "dataType": "int64",
+            "sourceColumn": "OrderID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "OrderDate",
+            "dataType": "dateTime",
+            "sourceColumn": "OrderDate",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Order",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[Order].* FROM [Dimension].[Order] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[Order].* FROM [Dimension].[Order] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Order"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "OrderLine",
+        "columns": [
+          {
+            "name": "OrderLineID",
+            "dataType": "int64",
+            "sourceColumn": "OrderLineID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "OrderID",
+            "dataType": "int64",
+            "sourceColumn": "OrderID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Quantity",
+            "dataType": "int64",
+            "sourceColumn": "Quantity",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "OrderLine",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[OrderLine].* FROM [Dimension].[OrderLine] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[OrderLine].* FROM [Dimension].[OrderLine] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "OrderLine"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "StockItem",
+        "columns": [
+          {
+            "name": "StockItemID",
+            "dataType": "int64",
+            "sourceColumn": "StockItemID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "StockItemName",
+            "dataType": "string",
+            "sourceColumn": "StockItemName",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "SupplierID",
+            "dataType": "int64",
+            "sourceColumn": "SupplierID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Brand",
+            "dataType": "string",
+            "sourceColumn": "Brand",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "TaxRate",
+            "dataType": "decimal",
+            "sourceColumn": "TaxRate",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "sourceProviderType": "Currency",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "UnitPrice",
+            "dataType": "decimal",
+            "sourceColumn": "UnitPrice",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "sourceProviderType": "Currency",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "RecommendedRetailPrice",
+            "dataType": "decimal",
+            "sourceColumn": "RecommendedRetailPrice",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "sourceProviderType": "Currency",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "StockItem",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[StockItem].* FROM [Dimension].[StockItem] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[StockItem].* FROM [Dimension].[StockItem] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "StockItem"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "Supplier",
+        "columns": [
+          {
+            "name": "SupplierID",
+            "dataType": "int64",
+            "sourceColumn": "SupplierID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "SupplierName",
+            "dataType": "string",
+            "sourceColumn": "SupplierName",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Supplier",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Dimension].[Supplier].* FROM [Dimension].[Supplier] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Dimension].[Supplier].* FROM [Dimension].[Supplier] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Supplier"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Dimension"
+          }
+        ]
+      },
+      {
+        "name": "Sales",
+        "columns": [
+          {
+            "name": "SaleID",
+            "dataType": "int64",
+            "sourceColumn": "SaleID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "StockItemID",
+            "dataType": "int64",
+            "sourceColumn": "StockItemID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "OrderLineID",
+            "dataType": "int64",
+            "sourceColumn": "OrderLineID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "CustomerID",
+            "dataType": "int64",
+            "sourceColumn": "CustomerID",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Date",
+            "dataType": "dateTime",
+            "isDataTypeInferred": true,
+            "expression": "RELATED('Order'[OrderDate])"
+          },
+          {
+            "type": "calculated",
+            "name": "TotalSale",
+            "dataType": "decimal",
+            "isDataTypeInferred": true,
+            "expression": "RELATED(OrderLine[Quantity]) * RELATED(StockItem[RecommendedRetailPrice])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Customer",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "RELATED(Customer[CustomerName])"
+          },
+          {
+            "type": "calculated",
+            "name": "Supplier",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "RELATED(Supplier[SupplierName])"
+          },
+          {
+            "type": "calculated",
+            "name": "Item",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "RELATED(StockItem[StockItemName])"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Sales",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " SELECT [Fact].[Sales].* FROM [Fact].[Sales] ",
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [Fact].[Sales].* FROM [Fact].[Sales] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Sales"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "Fact"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "07718767-9009-414a-b25a-1876ba3adf97",
+        "fromTable": "Customer",
+        "fromColumn": "DeliveryCityID",
+        "toTable": "City",
+        "toColumn": "CityID"
+      },
+      {
+        "name": "c838a5df-69cf-4f56-9d6d-333cdcb70d71",
+        "fromTable": "OrderLine",
+        "fromColumn": "OrderID",
+        "toTable": "Order",
+        "toColumn": "OrderID"
+      },
+      {
+        "name": "71fd7d42-3b9e-47a1-a794-4475cbe0963b",
+        "fromTable": "StockItem",
+        "fromColumn": "SupplierID",
+        "toTable": "Supplier",
+        "toColumn": "SupplierID"
+      },
+      {
+        "name": "a7bbb0bb-f604-45c0-8b97-40100d3483bd",
+        "fromCardinality": "one",
+        "fromTable": "Sales",
+        "fromColumn": "OrderLineID",
+        "toTable": "OrderLine",
+        "toColumn": "OrderLineID",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "5da2638d-0038-4e11-a6bf-a538b3300c51",
+        "fromTable": "Sales",
+        "fromColumn": "CustomerID",
+        "toTable": "Customer",
+        "toColumn": "CustomerID"
+      },
+      {
+        "name": "7e378e68-5f3a-4108-8846-9ba5239222e6",
+        "fromTable": "Sales",
+        "fromColumn": "StockItemID",
+        "toTable": "StockItem",
+        "toColumn": "StockItemID"
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
