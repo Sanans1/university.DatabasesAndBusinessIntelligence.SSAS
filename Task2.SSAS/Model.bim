@@ -227,16 +227,9 @@
           },
           {
             "name": "TaxRate",
-            "dataType": "decimal",
+            "dataType": "double",
             "sourceColumn": "TaxRate",
-            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
-            "sourceProviderType": "Currency",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
-              }
-            ]
+            "sourceProviderType": "Currency"
           },
           {
             "name": "UnitPrice",
@@ -337,25 +330,25 @@
         "name": "Sales",
         "columns": [
           {
-            "name": "SaleID",
+            "name": "Sale ID",
             "dataType": "int64",
             "sourceColumn": "SaleID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "StockItemID",
+            "name": "Stock Item ID",
             "dataType": "int64",
             "sourceColumn": "StockItemID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "OrderLineID",
+            "name": "Order Line ID",
             "dataType": "int64",
             "sourceColumn": "OrderLineID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "CustomerID",
+            "name": "Customer ID",
             "dataType": "int64",
             "sourceColumn": "CustomerID",
             "sourceProviderType": "Integer"
@@ -365,11 +358,18 @@
             "name": "Date",
             "dataType": "dateTime",
             "isDataTypeInferred": true,
-            "expression": "RELATED('Order'[OrderDate])"
+            "expression": "RELATED('Order'[OrderDate])",
+            "formatString": "dd/MM/yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"2057\" Group=\"ShortDate\" FormatString=\"dd/MM/yyyy\" /></DateTimes></Format>"
+              }
+            ]
           },
           {
             "type": "calculated",
-            "name": "TotalSale",
+            "name": "Total Sale",
             "dataType": "decimal",
             "isDataTypeInferred": true,
             "expression": "RELATED(OrderLine[Quantity]) * RELATED(StockItem[RecommendedRetailPrice])",
@@ -401,6 +401,27 @@
             "dataType": "string",
             "isDataTypeInferred": true,
             "expression": "RELATED(StockItem[StockItemName])"
+          },
+          {
+            "type": "calculated",
+            "name": "Quarter",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "ROUNDUP(MONTH(Sales[Date])/3, 0)"
+          },
+          {
+            "type": "calculated",
+            "name": "Profit",
+            "dataType": "decimal",
+            "isDataTypeInferred": true,
+            "expression": "Sales[Total Sale]-((RELATED(StockItem[UnitPrice])*(1+(RELATED(StockItem[TaxRate])/100)))*RELATED(OrderLine[Quantity]))",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
           }
         ],
         "partitions": [
@@ -411,6 +432,215 @@
               "type": "query",
               "query": " SELECT [Fact].[Sales].* FROM [Fact].[Sales] ",
               "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Days Current Quarter to Date",
+            "expression": "COUNTROWS(DATESQTD(Sales[Date]))"
+          },
+          {
+            "name": "Most profitable order line",
+            "expression": "MAX(Sales[Profit])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Most popular item",
+            "expression": "FIRSTNONBLANK(TOPN(1, VALUES(Sales[Item]), RANKX(ALL(Sales[Item]), SUMX(RELATEDTABLE(OrderLine), OrderLine[Quantity]),,ASC)),1)"
+          },
+          {
+            "name": "Most popular supplier",
+            "expression": "FIRSTNONBLANK(TOPN(1, VALUES(Sales[Supplier]), RANKX(ALL(Sales[Supplier]), SUMX(RELATEDTABLE(OrderLine), OrderLine[Quantity]),,ASC)),1)"
+          },
+          {
+            "name": "Days in Current Quarter",
+            "expression": "COUNTROWS(DATESBETWEEN(Sales[Date], STARTOFQUARTER(LASTDATE(Sales[Date])), ENDOFQUARTER(Sales[Date])))"
+          },
+          {
+            "name": "Distinct Sales",
+            "expression": "DISTINCTCOUNT(OrderLine[OrderID])"
+          },
+          {
+            "name": "Order Lines Count",
+            "expression": "COUNT(Sales[Order Line ID])"
+          },
+          {
+            "name": "Total Units",
+            "expression": "SUM(OrderLine[Quantity])"
+          },
+          {
+            "name": "Total Sales",
+            "expression": "SUM(Sales[Total Sale])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Total Profit",
+            "expression": "SUM(Sales[Profit])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Previous Quarter Profit",
+            "expression": "CALCULATE([Total Profit], PREVIOUSQUARTER(Sales[Date]))",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Current Quarter Profit",
+            "expression": "TOTALQTD([Total Profit], Sales[Date])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Previous Quarter Profit Proportion to QTD",
+            "expression": "[Previous Quarter Profit]*([Current Quarter Profit]/[Days in Current Quarter])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Previous Quarter Sales",
+            "expression": "CALCULATE([Total Sales], PREVIOUSQUARTER(Sales[Date]))"
+          },
+          {
+            "name": "Current Quarter Sales",
+            "expression": "TOTALQTD([Total Sales], Sales[Date])",
+            "formatString": "\"£\"#,0.00;-\"£\"#,0.00;\"£\"#,0.00",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"2057\" DisplayName=\"£ English (United Kingdom)\" Symbol=\"£\" PositivePattern=\"0\" NegativePattern=\"1\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Previous Quarter Sales Proportion to QTD",
+            "expression": "[Previous Quarter Sales]*([Days Current Quarter to Date]/[Days in Current Quarter])"
+          },
+          {
+            "name": "Current Quarter Sales Performance",
+            "expression": "IFERROR([Current Quarter Sales]/[Previous Quarter Sales Proportion to QTD], BLANK())",
+            "kpi": {
+              "targetExpression": "1.1",
+              "statusGraphic": "Shapes",
+              "statusExpression": [
+                "var x='Sales'[Current Quarter Sales Performance] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<1,-1,",
+                "\t                If(x<1.07,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "StaticValue"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Absolute"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "1"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "1.07"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Current Quarter Profit Performance",
+            "expression": "IF([Previous Quarter Profit Proportion to QTD]<>0,([Current Quarter Profit]-[Previous Quarter Profit Proportion to QTD])/[Previous Quarter Profit Proportion to QTD], BLANK())",
+            "kpi": {
+              "targetExpression": "1",
+              "statusGraphic": "Shapes",
+              "statusExpression": [
+                "var x='Sales'[Current Quarter Profit Performance] return",
+                "            if(ISBLANK(x),BLANK(),",
+                "                    If(x<0.82,-1,",
+                "\t                If(x<0.94,0,1)",
+                "                )",
+                "            )",
+                "            "
+              ],
+              "annotations": [
+                {
+                  "name": "GoalType",
+                  "value": "StaticValue"
+                },
+                {
+                  "name": "KpiStatusType",
+                  "value": "Linear"
+                },
+                {
+                  "name": "KpiThresholdType",
+                  "value": "Absolute"
+                },
+                {
+                  "name": "KpiThresholdOrdering",
+                  "value": "Ascending"
+                },
+                {
+                  "name": "KpiThresholdCount",
+                  "value": "2"
+                },
+                {
+                  "name": "KpiThreshold_0",
+                  "value": "0.82"
+                },
+                {
+                  "name": "KpiThreshold_1",
+                  "value": "0.94"
+                }
+              ]
             }
           }
         ],
@@ -456,7 +686,7 @@
         "name": "a7bbb0bb-f604-45c0-8b97-40100d3483bd",
         "fromCardinality": "one",
         "fromTable": "Sales",
-        "fromColumn": "OrderLineID",
+        "fromColumn": "Order Line ID",
         "toTable": "OrderLine",
         "toColumn": "OrderLineID",
         "crossFilteringBehavior": "bothDirections"
@@ -464,14 +694,14 @@
       {
         "name": "5da2638d-0038-4e11-a6bf-a538b3300c51",
         "fromTable": "Sales",
-        "fromColumn": "CustomerID",
+        "fromColumn": "Customer ID",
         "toTable": "Customer",
         "toColumn": "CustomerID"
       },
       {
         "name": "7e378e68-5f3a-4108-8846-9ba5239222e6",
         "fromTable": "Sales",
-        "fromColumn": "StockItemID",
+        "fromColumn": "Stock Item ID",
         "toTable": "StockItem",
         "toColumn": "StockItemID"
       }
