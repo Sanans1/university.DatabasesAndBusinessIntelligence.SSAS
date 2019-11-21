@@ -113,6 +113,8 @@
           {
             "name": "OrderID",
             "dataType": "int64",
+            "isUnique": true,
+            "isKey": true,
             "sourceColumn": "OrderID",
             "sourceProviderType": "Integer"
           },
@@ -133,6 +135,48 @@
               "query": " SELECT [Dimension].[Order].* FROM [Dimension].[Order] ",
               "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
             }
+          },
+          {
+            "name": "Order - 2013",
+            "mode": "import",
+            "source": {
+              "type": "query",
+              "query": [
+                "SELECT [Dimension].[Order].* FROM [Dimension].[Order]",
+                "WHERE (([OrderDate] >= N'2013-01-01 00:00:00') AND ([OrderDate] < N'2014-01-01 00:00:00'))"
+              ],
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [Dimension].[Order].* FROM [Dimension].[Order]",
+                  "WHERE (([OrderDate] >= N'2013-01-01 00:00:00') AND ([OrderDate] < N'2014-01-01 00:00:00'))</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Order - 2014",
+            "mode": "import",
+            "source": {
+              "type": "query",
+              "query": [
+                "SELECT [Dimension].[Order].* FROM [Dimension].[Order]",
+                "WHERE (([OrderDate] >= N'2014-01-01 00:00:00') AND ([OrderDate] < N'2015-01-01 00:00:00'))"
+              ],
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [Dimension].[Order].* FROM [Dimension].[Order]",
+                  "WHERE (([OrderDate] >= N'2014-01-01 00:00:00') AND ([OrderDate] < N'2015-01-01 00:00:00'))</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
           }
         ],
         "annotations": [
@@ -156,6 +200,8 @@
           {
             "name": "OrderLineID",
             "dataType": "int64",
+            "isUnique": true,
+            "isKey": true,
             "sourceColumn": "OrderLineID",
             "sourceProviderType": "Integer"
           },
@@ -330,25 +376,25 @@
         "name": "Sales",
         "columns": [
           {
-            "name": "Sale ID",
+            "name": "SaleID",
             "dataType": "int64",
             "sourceColumn": "SaleID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "Stock Item ID",
+            "name": "StockItemID",
             "dataType": "int64",
             "sourceColumn": "StockItemID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "Order Line ID",
+            "name": "OrderLineID",
             "dataType": "int64",
             "sourceColumn": "OrderLineID",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "Customer ID",
+            "name": "CustomerID",
             "dataType": "int64",
             "sourceColumn": "CustomerID",
             "sourceProviderType": "Integer"
@@ -469,7 +515,7 @@
           },
           {
             "name": "Order Lines Count",
-            "expression": "COUNT(Sales[Order Line ID])"
+            "expression": "COUNT(Sales[OrderLineID])"
           },
           {
             "name": "Total Units",
@@ -651,22 +697,22 @@
               {
                 "name": "Sale ID",
                 "ordinal": 0,
-                "column": "Sale ID"
+                "column": "SaleID"
               },
               {
                 "name": "Stock Item ID",
                 "ordinal": 1,
-                "column": "Stock Item ID"
+                "column": "StockItemID"
               },
               {
                 "name": "Order Line ID",
                 "ordinal": 2,
-                "column": "Order Line ID"
+                "column": "OrderLineID"
               },
               {
                 "name": "Customer ID",
                 "ordinal": 3,
-                "column": "Customer ID"
+                "column": "CustomerID"
               }
             ]
           },
@@ -711,13 +757,6 @@
         "toColumn": "CityID"
       },
       {
-        "name": "c838a5df-69cf-4f56-9d6d-333cdcb70d71",
-        "fromTable": "OrderLine",
-        "fromColumn": "OrderID",
-        "toTable": "Order",
-        "toColumn": "OrderID"
-      },
-      {
         "name": "71fd7d42-3b9e-47a1-a794-4475cbe0963b",
         "fromTable": "StockItem",
         "fromColumn": "SupplierID",
@@ -728,7 +767,7 @@
         "name": "a7bbb0bb-f604-45c0-8b97-40100d3483bd",
         "fromCardinality": "one",
         "fromTable": "Sales",
-        "fromColumn": "Order Line ID",
+        "fromColumn": "OrderLineID",
         "toTable": "OrderLine",
         "toColumn": "OrderLineID",
         "crossFilteringBehavior": "bothDirections"
@@ -736,16 +775,23 @@
       {
         "name": "5da2638d-0038-4e11-a6bf-a538b3300c51",
         "fromTable": "Sales",
-        "fromColumn": "Customer ID",
+        "fromColumn": "CustomerID",
         "toTable": "Customer",
         "toColumn": "CustomerID"
       },
       {
         "name": "7e378e68-5f3a-4108-8846-9ba5239222e6",
         "fromTable": "Sales",
-        "fromColumn": "Stock Item ID",
+        "fromColumn": "StockItemID",
         "toTable": "StockItem",
         "toColumn": "StockItemID"
+      },
+      {
+        "name": "818b8ce5-7bfe-4a23-a63a-f8e3cf467c99",
+        "fromTable": "OrderLine",
+        "fromColumn": "OrderID",
+        "toTable": "Order",
+        "toColumn": "OrderID"
       }
     ],
     "perspectives": [
@@ -773,7 +819,7 @@
                 "name": "Customer"
               },
               {
-                "name": "Customer ID"
+                "name": "CustomerID"
               },
               {
                 "name": "Date"
@@ -782,7 +828,7 @@
                 "name": "Item"
               },
               {
-                "name": "Order Line ID"
+                "name": "OrderLineID"
               },
               {
                 "name": "Profit"
@@ -791,10 +837,10 @@
                 "name": "Quarter"
               },
               {
-                "name": "Sale ID"
+                "name": "SaleID"
               },
               {
-                "name": "Stock Item ID"
+                "name": "StockItemID"
               },
               {
                 "name": "Supplier"
@@ -885,6 +931,18 @@
                 "name": "UnitPrice"
               }
             ]
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "Administrator",
+        "modelPermission": "administrator",
+        "members": [
+          {
+            "memberName": "NT SERVICE\\MSSQLServerOLAPService",
+            "memberId": "S-1-5-80-2872255330-672591203-888807865-2791174282-1554802921"
           }
         ]
       }
