@@ -644,6 +644,48 @@
             }
           }
         ],
+        "hierarchies": [
+          {
+            "name": "IDs",
+            "levels": [
+              {
+                "name": "Sale ID",
+                "ordinal": 0,
+                "column": "Sale ID"
+              },
+              {
+                "name": "Stock Item ID",
+                "ordinal": 1,
+                "column": "Stock Item ID"
+              },
+              {
+                "name": "Order Line ID",
+                "ordinal": 2,
+                "column": "Order Line ID"
+              },
+              {
+                "name": "Customer ID",
+                "ordinal": 3,
+                "column": "Customer ID"
+              }
+            ]
+          },
+          {
+            "name": "Vital Sale Data",
+            "levels": [
+              {
+                "name": "Profit",
+                "ordinal": 0,
+                "column": "Profit"
+              },
+              {
+                "name": "Total Sale",
+                "ordinal": 1,
+                "column": "Total Sale"
+              }
+            ]
+          }
+        ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
@@ -704,6 +746,147 @@
         "fromColumn": "Stock Item ID",
         "toTable": "StockItem",
         "toColumn": "StockItemID"
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Sales",
+        "tables": [
+          {
+            "name": "OrderLine",
+            "columns": [
+              {
+                "name": "OrderID"
+              },
+              {
+                "name": "OrderLineID"
+              },
+              {
+                "name": "Quantity"
+              }
+            ]
+          },
+          {
+            "name": "Sales",
+            "columns": [
+              {
+                "name": "Customer"
+              },
+              {
+                "name": "Customer ID"
+              },
+              {
+                "name": "Date"
+              },
+              {
+                "name": "Item"
+              },
+              {
+                "name": "Order Line ID"
+              },
+              {
+                "name": "Profit"
+              },
+              {
+                "name": "Quarter"
+              },
+              {
+                "name": "Sale ID"
+              },
+              {
+                "name": "Stock Item ID"
+              },
+              {
+                "name": "Supplier"
+              },
+              {
+                "name": "Total Sale"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Current Quarter Profit"
+              },
+              {
+                "name": "Current Quarter Sales"
+              },
+              {
+                "name": "Days Current Quarter to Date"
+              },
+              {
+                "name": "Days in Current Quarter"
+              },
+              {
+                "name": "Distinct Sales"
+              },
+              {
+                "name": "Most popular item"
+              },
+              {
+                "name": "Most popular supplier"
+              },
+              {
+                "name": "Most profitable order line"
+              },
+              {
+                "name": "Order Lines Count"
+              },
+              {
+                "name": "Previous Quarter Profit"
+              },
+              {
+                "name": "Previous Quarter Profit Proportion to QTD"
+              },
+              {
+                "name": "Previous Quarter Sales"
+              },
+              {
+                "name": "Previous Quarter Sales Proportion to QTD"
+              },
+              {
+                "name": "Total Profit"
+              },
+              {
+                "name": "Total Sales"
+              },
+              {
+                "name": "Total Units"
+              },
+              {
+                "name": "Current Quarter Profit Performance"
+              },
+              {
+                "name": "Current Quarter Sales Performance"
+              }
+            ]
+          },
+          {
+            "name": "StockItem",
+            "columns": [
+              {
+                "name": "Brand"
+              },
+              {
+                "name": "RecommendedRetailPrice"
+              },
+              {
+                "name": "StockItemID"
+              },
+              {
+                "name": "StockItemName"
+              },
+              {
+                "name": "SupplierID"
+              },
+              {
+                "name": "TaxRate"
+              },
+              {
+                "name": "UnitPrice"
+              }
+            ]
+          }
+        ]
       }
     ],
     "annotations": [
