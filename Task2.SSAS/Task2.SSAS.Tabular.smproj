@@ -8,15 +8,15 @@
     <AssemblyName>MyAssemblyName</AssemblyName>
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
     <OutputPath>bin\</OutputPath>
-    <Name>Task2.SSAS</Name>
+    <Name>Task2.SSAS.Tabular</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Development' ">
     <OutputPath>bin\</OutputPath>
     <DeploymentServerName>localhost</DeploymentServerName>
     <DeploymentServerEdition>Developer</DeploymentServerEdition>
     <DeploymentServerVersion>Unknown</DeploymentServerVersion>
-    <DeploymentServerDatabase>Task2SSAS</DeploymentServerDatabase>
-    <DeploymentServerCubeName>Task2SSAS</DeploymentServerCubeName>
+    <DeploymentServerDatabase>Task2.SSAS.Tabular</DeploymentServerDatabase>
+    <DeploymentServerCubeName>Task2.SSAS.Tabular</DeploymentServerCubeName>
     <DeploymentOptionProcessing>Default</DeploymentOptionProcessing>
     <DeploymentOptionTransactionalDeployment>False</DeploymentOptionTransactionalDeployment>
     <DeploymentOptionADALCache>Default</DeploymentOptionADALCache>
