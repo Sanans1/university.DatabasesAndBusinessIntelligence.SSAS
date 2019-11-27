@@ -15,8 +15,8 @@
     <DeploymentServerName>localhost</DeploymentServerName>
     <DeploymentServerEdition>Developer</DeploymentServerEdition>
     <DeploymentServerVersion>Unknown</DeploymentServerVersion>
-    <DeploymentServerDatabase>Task2.SSAS.Tabular</DeploymentServerDatabase>
-    <DeploymentServerCubeName>Task2.SSAS.Tabular</DeploymentServerCubeName>
+    <DeploymentServerDatabase>Task2SSASTabular</DeploymentServerDatabase>
+    <DeploymentServerCubeName>Task2SSASTabular</DeploymentServerCubeName>
     <DeploymentOptionProcessing>Default</DeploymentOptionProcessing>
     <DeploymentOptionTransactionalDeployment>False</DeploymentOptionTransactionalDeployment>
     <DeploymentOptionADALCache>Default</DeploymentOptionADALCache>
