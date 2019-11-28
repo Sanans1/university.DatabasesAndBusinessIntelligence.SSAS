@@ -27,7 +27,7 @@
     <DeploymentServerName>localhost</DeploymentServerName>
     <DeploymentServerEdition>Developer</DeploymentServerEdition>
     <DeploymentServerVersion>Unknown</DeploymentServerVersion>
-    <DeploymentServerDatabase>Task2SSAS</DeploymentServerDatabase>
+    <DeploymentServerDatabase>Task2SSASTabular</DeploymentServerDatabase>
     <DeploymentServerCubeName>Model</DeploymentServerCubeName>
     <DeploymentOptionProcessing>Default</DeploymentOptionProcessing>
     <DeploymentOptionTransactionalDeployment>False</DeploymentOptionTransactionalDeployment>

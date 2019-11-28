@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer LAPTOP-LEJVLN96 student#DW",
-        "connectionString": "Provider=SQLNCLI11;Data Source=LAPTOP-LEJVLN96;Initial Catalog=student#DW;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLNCLI11;Data Source=LAPTOP-LEJVLN96;Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=student#DW",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -128,43 +128,16 @@
         ],
         "partitions": [
           {
-            "name": "Order - 2013",
+            "name": "Order",
             "source": {
               "type": "query",
-              "query": [
-                "SELECT * FROM [Dimension].[Order]",
-                "WHERE (([OrderDate] >= N'2013-01-01 00:00:00') AND ([OrderDate] < N'2014-01-01 00:00:00'))"
-              ],
+              "query": "SELECT [Dimension].[Order].* FROM [Dimension].[Order]",
               "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [Dimension].[Order]",
-                  "WHERE (([OrderDate] >= N'2013-01-01 00:00:00') AND ([OrderDate] < N'2014-01-01 00:00:00'))</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
-              }
-            ]
-          },
-          {
-            "name": "Order - 2014",
-            "mode": "import",
-            "source": {
-              "type": "query",
-              "query": [
-                "SELECT * FROM [Dimension].[Order]",
-                "WHERE (([OrderDate] >= N'2014-01-01 00:00:00') AND ([OrderDate] < N'2015-01-01 00:00:00'))"
-              ],
-              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [Dimension].[Order]",
-                  "WHERE (([OrderDate] >= N'2014-01-01 00:00:00') AND ([OrderDate] < N'2015-01-01 00:00:00'))</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [Dimension].[Order].* FROM [Dimension].[Order]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -462,13 +435,120 @@
         ],
         "partitions": [
           {
-            "name": "Sales",
-            "dataView": "full",
+            "name": "Sales - 2013",
             "source": {
               "type": "query",
-              "query": " SELECT [Fact].[Sales].* FROM [Fact].[Sales] ",
+              "query": [
+                "SELECT",
+                "  Fact.Sales.*",
+                "FROM",
+                "  Dimension.OrderLine",
+                "  INNER JOIN Fact.Sales",
+                "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                "  INNER JOIN Dimension.[Order]",
+                "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                "WHERE",
+                "  Dimension.[Order].OrderDate >= N'2013-01-01T00:00:00'",
+                "  AND Dimension.[Order].OrderDate < N'2014-01-01T00:00:00'"
+              ],
               "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
-            }
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
+                  "  Fact.Sales.*",
+                  "FROM",
+                  "  Dimension.OrderLine",
+                  "  INNER JOIN Fact.Sales",
+                  "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                  "  INNER JOIN Dimension.[Order]",
+                  "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                  "WHERE",
+                  "  Dimension.[Order].OrderDate >= N'2013-01-01T00:00:00'",
+                  "  AND Dimension.[Order].OrderDate < N'2014-01-01T00:00:00'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState><DesignerState><UseGenericDesigner>false</UseGenericDesigner><InternalDesignerState><QueryDefinition xmlns=\"http://schemas.microsoft.com/ReportingServices/QueryDefinition/Relational\"><SelectedColumns><ColumnExpression Schema=\"Fact\" ColumnOwner=\"Sales\" ColumnName=\"SaleID\" /><ColumnExpression Schema=\"Fact\" ColumnOwner=\"Sales\" ColumnName=\"StockItemID\" /><ColumnExpression Schema=\"Fact\" ColumnOwner=\"Sales\" ColumnName=\"OrderLineID\" /><ColumnExpression Schema=\"Fact\" ColumnOwner=\"Sales\" ColumnName=\"CustomerID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"Order\" ColumnName=\"OrderID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"Order\" ColumnName=\"CustomerID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"Order\" ColumnName=\"OrderDate\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"OrderLine\" ColumnName=\"StockItemID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"OrderLine\" ColumnName=\"OrderLineID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"OrderLine\" ColumnName=\"OrderID\" /><ColumnExpression Schema=\"Dimension\" ColumnOwner=\"OrderLine\" ColumnName=\"Quantity\" /></SelectedColumns><Joins><Join Type=\"CROSS JOIN\" ColumnOwner=\"OrderLine\" Schema=\"Dimension\" /><Join Type=\"INNER JOIN\" ColumnOwner=\"Sales\" Schema=\"Fact\"><On><From ColumnOwner=\"OrderLine\" Schema=\"Dimension\" ColumnName=\"OrderLineID\" /><To ColumnOwner=\"Sales\" Schema=\"Fact\" ColumnName=\"OrderLineID\" /></On></Join><Join Type=\"INNER JOIN\" ColumnOwner=\"Order\" Schema=\"Dimension\"><On><From ColumnOwner=\"OrderLine\" Schema=\"Dimension\" ColumnName=\"OrderID\" /><To ColumnOwner=\"Order\" Schema=\"Dimension\" ColumnName=\"OrderID\" /></On></Join></Joins></QueryDefinition></InternalDesignerState></DesignerState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sales - 2014",
+            "mode": "import",
+            "source": {
+              "type": "query",
+              "query": [
+                "SELECT",
+                "  Fact.Sales.*",
+                "FROM",
+                "  Dimension.OrderLine",
+                "  INNER JOIN Fact.Sales",
+                "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                "  INNER JOIN Dimension.[Order]",
+                "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                "WHERE",
+                "  Dimension.[Order].OrderDate >= N'2014-01-01T00:00:00'",
+                "  AND Dimension.[Order].OrderDate < N'2015-01-01T00:00:00'"
+              ],
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
+                  "  Fact.Sales.*",
+                  "FROM",
+                  "  Dimension.OrderLine",
+                  "  INNER JOIN Fact.Sales",
+                  "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                  "  INNER JOIN Dimension.[Order]",
+                  "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                  "WHERE",
+                  "  Dimension.[Order].OrderDate >= N'2014-01-01T00:00:00'",
+                  "  AND Dimension.[Order].OrderDate < N'2015-01-01T00:00:00'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Sales - 2015",
+            "mode": "import",
+            "source": {
+              "type": "query",
+              "query": [
+                "SELECT",
+                "  Fact.Sales.*",
+                "FROM",
+                "  Dimension.OrderLine",
+                "  INNER JOIN Fact.Sales",
+                "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                "  INNER JOIN Dimension.[Order]",
+                "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                "WHERE",
+                "  Dimension.[Order].OrderDate >= N'2015-01-01T00:00:00'",
+                "  AND Dimension.[Order].OrderDate < N'2016-01-01T00:00:00'"
+              ],
+              "dataSource": "SqlServer LAPTOP-LEJVLN96 student#DW"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
+                  "  Fact.Sales.*",
+                  "FROM",
+                  "  Dimension.OrderLine",
+                  "  INNER JOIN Fact.Sales",
+                  "    ON Dimension.OrderLine.OrderLineID = Fact.Sales.OrderLineID",
+                  "  INNER JOIN Dimension.[Order]",
+                  "    ON Dimension.OrderLine.OrderID = Dimension.[Order].OrderID",
+                  "WHERE",
+                  "  Dimension.[Order].OrderDate >= N'2015-01-01T00:00:00'",
+                  "  AND Dimension.[Order].OrderDate < N'2016-01-01T00:00:00'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
           }
         ],
         "measures": [
